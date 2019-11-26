@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Travel Planning App</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="js-signup-form">
+        <form action="">
+            <h1></div>Let's get traveling!</h1>
+            <p>Sign In or Sign Up so we can get this trip started.</p>
+            <hr>
+
+            <label for="email"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+
+            <label>
+                <input type="checkbox" checked="checked" name="remember">
+                Remember me
+            </label>
+
+            <div>
+                <button type="submit" class="signinbtn">Sign In</button>
+                <button type="submit" class="signupbtn">Sign Up</button>
+            </div>
+        </form>
+     </div>
+
+    <div>
+        <p id="js-error-message" class="error-message"></p>
+    </div>    
+
+    <div class="container" id="initial-Search-Page" style="display: block">
+        <h1>Where are we heading?</h1> 
+        <p>Enter your travel specifics below.</p>
+                
+        <form id="initialSearch">
+            <label for="city">City:</label>
+            <input type="text" name="search-city" id="js-search-city" required>
+
+            <label for="adults">Number of Adults:</label>
+            <input type="number" name="adult-number" id="js-adult-number" required>
+
+            <label for="arrival">Arrival Date:</label>
+            <input type="text" name="arrival-date" id="js-arrival-date" required>
+
+            <label for="departure">Departure Date:</label>
+            <input type="text" name="departure-date" id="js-departure-date" required>
+
+            <label for="rooms">Number of Rooms:</label>
+            <input type="number" name="room-numer" id="js-room-number" required>
+
+            <label for="results">Maximum Results Per Page:</label>
+            <select multiple size="1" name="max-results" id="js-max-results" required>
+                <option value="30" selected>30</option>
+                <option value="10">10</option>
+                <option value="">50</option>
+            </select>
+
+            <label for="sort">Sort By:</label>
+            <select multiple size="1" name="sort-by" id="js-sort-by">
+                <option value="popularity" selected>Popularity</option>
+                <option value="distance">Distance</option>
+                <option value="starsDown">Stars (5 to 0)</option>
+                <option value="starsUp">Stars (0 to 5)</option>
+                <option value="review">Guest Review Score</option>
+                <option value="price">Price (low to high)</option>
+            </select>
+
+            <input type="submit" value="Let's go!">
+        </form>
+    </div>
+                    
+    <div id="myPageB" style="display: none">
+                    <fieldset>
+                     <legend>Page B:</legend>
+                   <h1>Page Data "B"</h1>
+                    </fieldset>
+    </div>
+                    
+            <div id="myPageC" style="display: none">
+                    <fieldset>
+                     <legend>Page C:</legend>
+                   <h1>Page Data "C"</h1>
+                    </fieldset>
+            </div>
+            <section id="results" class="hidden">
+              <h2>Parks:</h2>
+              <ul id="results-list">
+              </ul>
+            </section>
+
+        </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">​​​​​​​​​​
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
