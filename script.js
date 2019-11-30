@@ -11,8 +11,8 @@ const options = {
         "x-api-key": apiKey})
 };
 
-const advisoryRequest = fetch(options, 'https://www.travel-advisory.info/api');
-const detailedRequest = fetch('https://api.sygictravelapi.com/1.2/en');
+const advisoryRequest = fetch('https://www.travel-advisory.info/api');
+const detailedRequest = fetch((options),('https://api.sygictravelapi.com/1.2/en'));
 
 Promise.all([advisoryRequest, detailedRequest])
 .then(values => Promise.all(values.map(value => value.json())))
