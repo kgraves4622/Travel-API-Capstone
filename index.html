@@ -10,8 +10,8 @@
 </head>
 <body>
     <div class="container" id="initial-search-screen" style="display: block">
-        <h1>Should I go?</h1> 
-        <h2>Enter your travel specifics below to see any given country's current travel advsiory.</h2>
+        <h1>Should you stay or should you go?</h1> 
+        <h2>Select a country below to see any given country's current travel advsiory.</h2>
         <div>   
         <form id="initialSearch">
             <select multiple size="3" name="select-country" id="js-select-country" required>
@@ -267,7 +267,7 @@
             </select>
         </div>
         <div>
-            <input type="submit" value="Let's see!">
+            <input id="advisorySubmit" type="submit" value="Let's find out!">
         </div>
         </form>
     </div>
@@ -297,7 +297,21 @@
             <form id="js-detailed-search">
                 <div>
                     <label for="search-term">Search places by name of city, state, continent, country, island, town, village or point of interest. </label>
-                    <input type="text" name="search-level" id="js-search-level" required>
+                    <input type="text" name="search-query" id="js-search-query" required>
+                </div>
+
+                <div>
+                    <label for="search-level">Type of Place:</label>
+                    <select multiple size="3" name="search-level" id="js-search-level">
+                        <option value="city">City</option>
+                        <option value="town">Town</option>
+                        <option value="poi">Place of Interest</option>
+                        <option value="village">Village</option>
+                        <option value="neighborhood">Neighborhood</option>
+                        <option value="country">Country</option>
+                        <option value="state">State</option>
+                        <option value="island">Island</option>
+                    </select>
                 </div>
 
                 <div>
@@ -327,10 +341,10 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="Submit">
+                    <input id= "detailedSubmit" type="submit" value="Submit">
                 </div>
             </form>
-            <section id="explore-place-results" class="hidden">
+            <section id="explore-place-results" style="display: none">
                 <h1>Go ahead, take a look around.</h1>          
                     <ul id="explore-results-list">
                     </ul>
