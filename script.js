@@ -1,9 +1,26 @@
 'use strict'
 
 
-function promiseData() {
+function fetchAdvisoryData() {
+    $('#advisory-results-list').empty();
 
-const apiKey = "S2KGHr4Crb5cyB6342J0x8xKnIPfdtjcaBG9wjw3";
+    var countrycode = $('#js-select-country').val();
+
+    var lclUrlString = "https://www.travel-advisory.info/api?countrycode=" + countrycode
+
+    fetch(lclUrlString)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+         }
+            throw new Error(response.statusText);
+        }).then(responseJson => displayAdvisory(responseJson))
+        .catch(err => {
+            $('#js-error-message').text('Something went wrong: ${err.message');
+        })
+
+}
+/*const apiKey = "S2KGHr4Crb5cyB6342J0x8xKnIPfdtjcaBG9wjw3";
 
 
 const options = {
@@ -13,48 +30,8 @@ const options = {
 
 const advisoryRequest = fetch('https://www.travel-advisory.info/api');
 const detailedRequest = fetch((options),('https://api.sygictravelapi.com/1.2/en'));
-
-Promise.all([advisoryRequest, detailedRequest])
-.then(values => Promise.all(values.map(value => value.json())))
-.then(responseJson => {
-    if (response.ok) {
-        return fetchAdvisory(advisoryRequest);
-    }
-    throw new Error (response.statusText);
-    })
-    .then(responseJson => displayDetailedResults(responseJson, limit))
-    .then(finalVals => {
-        $('form').submit(event => {
-            let firstAPIResp = finalVals[0]
-            let secondAPIResp = finalVals[1]
-            controlForm(firstAPIResp, secondAPIResp);
-            });
-    })
-    .catch(err => {
-        $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    });
-}
-    /*console.log(responseJson);
-    let firstAPIResp = finalVals[0];
-    let secondAPIResp = finalVals[1];
-    displayAdvisory(firstAPIResp);
-    displayDetailedResults(secondAPIResp);*/
-
-
-function fetchAdvisory(responseJson) {
-    $('#advisory-results-list').empty
-    
-    if (response.ok) {
-        console.log(responseJson)
-        .then(response => response.json())
-        .then(responseJson => countryNotFound(responseJson))
-    };
-    //const countryCode = $('#js-select-country').val();
-
-    //const advisoryURL = "https://www.travel-advisory.info/api";
-}
-
-function countryNotFound(responseJson) {
+*/
+/*function countryNotFound(responseJson) {
     console.log(responseJson);
 
     $('#advisory-results-list').empty
@@ -66,7 +43,7 @@ function countryNotFound(responseJson) {
     } else {
         displayAdvisory(responseJson);
     }
-}
+}*/
 
 function displayAdvisory(responseJson) {
     console.log(responseJson);
@@ -76,7 +53,8 @@ function displayAdvisory(responseJson) {
     var results = responseJson.message
     
     $('#advisory-results-list').append(
-    `<li><h3><a href="${'#advisory-results-list'}.html(results)}"></a></h3></li>`
+        `<ol><h3>Country: ${responseJson.data.FR.name}</h3>
+        <p>Current Travel Advisory Score: ${responseJson.data.FR.advisory.score}</p><p>Continent: ${responseJson.data.FR.continent}</p></ol>`
     )
 }
 
@@ -149,15 +127,17 @@ function controlForm() {
         });
 }
         
-$(promiseData);
+//$(promiseData);
 
 
 
 
-/*function pageManagement() {
+function pageManagement() {
     
     $('#advisorySubmit').click(function(){
+        event.preventDefault();
         $('#advisory-results-screen').show();
+        fetchAdvisoryData();
         $('#initial-search-screen').hide();
         $('#explore-place-screen').hide();
     });
@@ -174,10 +154,13 @@ $(promiseData);
         $('#advisory-results-screen').hide();
     });
 
+/*
     $('#detailedSubmit').click(function(){
         $('#explore-place-results').show();
         $('#initial-search-screen').hide();
         $('#advisory-results-screen').hide();
     });
+*/
+}
 
-}*/
+$(pageManagement);
