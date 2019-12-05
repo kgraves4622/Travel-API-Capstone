@@ -1,10 +1,10 @@
 'use strict'
 
+const countrycode = $('#js-select-country').val();
 
 function fetchAdvisoryData() {
     $('#advisory-results-list').empty();
 
-    var countrycode = $('#js-select-country').val();
 
     var lclUrlString = "https://www.travel-advisory.info/api?countrycode=" + countrycode
 
@@ -16,62 +16,34 @@ function fetchAdvisoryData() {
             throw new Error(response.statusText);
         }).then(responseJson => displayAdvisory(responseJson))
         .catch(err => {
-            $('#js-error-message').text('Something went wrong: ${err.message');
+            $('#js-error-message').text(`Something went wrong: ${err.message}`);
         })
 
 }
-/*const apiKey = "S2KGHr4Crb5cyB6342J0x8xKnIPfdtjcaBG9wjw3";
 
-
-const options = {
-    headers: new Headers({
-        "x-api-key": apiKey})
-};
-
-const advisoryRequest = fetch('https://www.travel-advisory.info/api');
-const detailedRequest = fetch((options),('https://api.sygictravelapi.com/1.2/en'));
-*/
-/*function countryNotFound(responseJson) {
-    console.log(responseJson);
-
-    $('#advisory-results-list').empty
-
-    var caughtError = responseJson.status
-
-    if (caughtError === 'error') {
-        alert (`Sorry: ${responseJson.message}`);
-    } else {
-        displayAdvisory(responseJson);
-    }
-}*/
 
 function displayAdvisory(responseJson) {
     console.log(responseJson);
 
     $('#advisory-results-list').empty
 
-    var results = responseJson.message
+    const countrycode = $('#js-select-country').val();
     
     $('#advisory-results-list').append(
-        `<ol><h3>Country: ${responseJson.data.FR.name}</h3>
-        <p>Current Travel Advisory Score: ${responseJson.data.FR.advisory.score}</p><p>Continent: ${responseJson.data.FR.continent}</p></ol>`
+        $(`<ol><h3>Country: ${responseJson.data[countrycode].name}</h3>
+        <p>Continent: ${responseJson.data[countrycode].continent}</p>
+        <p>Current Travel Advisory: ${responseJson.data[countrycode].advisory.score}</p> 
+        </ol>`)
     )
 }
 
-
-function fetchDetailedResults(query, limit=10) {
-
-    /*const apiKey = "S2KGHr4Crb5cyB6342J0x8xKnIPfdtjcaBG9wjw3"
-
-    const tripURL = "https://api.sygictravelapi.com/1.2/en"*/
-
-    function formatQueryParams(params) {
+function formatQueryParams(params) {
         const queryItems = Object.keys(params)
          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         return queryItems.join('&');
   }
 
-    function displayDetailedResults(responseJson, limit) {
+function displayDetailedResults(responseJson) {
         console.log(responseJson);
 
         $('#explore-results-list').empty();
@@ -80,24 +52,47 @@ function fetchDetailedResults(query, limit=10) {
 
         for (let i= 0; i < results.length & i<maxResults ; i++)
             $('#explore-results-list').append(
-                `<li><h3><a href="${results[i].list}"></h3></li>`
+                `<li><h3><a href="${results.data[i].places}"></h3></li>`
             )
     }
+
+    function fetchDetailedResults(query, limit=10) {
+    
+    const apiKey = "S2KGHr4Crb5cyB6342J0x8xKnIPfdtjcaBG9wjw3";
+
+    const tripURL = "https://api.sygictravelapi.com/1.2/en";
+
     const params = {
         query: query,
-        levels: query,
-        categories: query, 
-        limit,
+        level: $('#js-search-level').val(),
+        categories: $('#js-categories').val(), 
+        limit: $('#js-max-results').val(),
     };
+
+   /* const options = new Headers({
+        "X-Api-Key": "apiKey",
+    });*/
+
+
+    var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+
     const queryString = formatQueryParams(params)
     const url = tripURL + '?' + queryString;
 
     console.log(url);
-
-    /*const options = {
-        headers: new Headers({
-            "x-api-key": apiKey})
-    };*/
+        
+    fetch(proxyUrl + url)
+        .then(blob => blob.json())
+        .then(data => {
+            console.table(data);
+        document.querySelector("pre").innerHTML = JSON.stringify(data, null, 2);
+            return data;
+  })
+    .catch(e => {
+        console.log(e);
+        return e;
+  });
+}
 
     /*fetch(url, options)
         .then(response => {
@@ -110,13 +105,12 @@ function fetchDetailedResults(query, limit=10) {
         .catch(err => {
             $('#js-error-message').text('Something went wrong: ${err.message}');
         });*/
-}
 
 
 
 
 
-function controlForm() {
+/*function controlForm() {
     $('form').submit(event => {
         event.preventDefault();
         const searchCountry = $('#js-select-contry').val();
@@ -125,7 +119,7 @@ function controlForm() {
         fetchAdvisory(searchCountry)
         fetchDetailedResults(searchTerm, limit)
         });
-}
+}*/
         
 //$(promiseData);
 
@@ -143,24 +137,31 @@ function pageManagement() {
     });
 
     $('#new-search').click(function(){
+        event.preventDefault();
         $('#initial-search-screen').show();
         $('#advisory-results-screen').hide();
         $('#explore-place-screen').hide();
     });
 
-    $('#search-trip').click(function(){
+    $('#start-trip').click(function(){
+        event.preventDefault();
         $('#explore-place-screen').show();
         $('#initial-search-screen').hide();
         $('#advisory-results-screen').hide();
     });
 
-/*
+
     $('#detailedSubmit').click(function(){
+        event.preventDefault();
         $('#explore-place-results').show();
+        const searchTerm = $('#js-search-query').val();
+        const level = $('#js-search-level').val();
+        const categories = $('#js-categories').val();
+        const limit = $('#js-max-results').val();
+        fetchDetailedResults(searchTerm, level, categories, limit);
         $('#initial-search-screen').hide();
         $('#advisory-results-screen').hide();
     });
-*/
 }
 
 $(pageManagement);
